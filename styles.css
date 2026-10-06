@@ -338,7 +338,11 @@ td:nth-child(2),td:nth-child(3) {
   white-space:nowrap
 }
 .limiting {
-  background:#fff8f2
+  background:#fff0e2;
+}
+.limiting td:first-child {
+  box-shadow:inset 4px 0 0 var(--orange);
+  font-weight:700;
 }
 .badge {
   display:inline-block;
@@ -361,9 +365,15 @@ td:nth-child(2),td:nth-child(3) {
   color:#9a3f22
 }
 .limit-label {
-  display:block;
-  color:var(--orange);
-  font-size:11px
+  display:table;
+  margin-top:6px;
+  padding:3px 8px;
+  border:1px solid #ecc19e;
+  border-radius:5px;
+  background:#ffe0c5;
+  color:#873c0d;
+  font-size:11px;
+  font-weight:700;
 }
 .empty-state {
   text-align:center;
@@ -473,4 +483,13 @@ footer {
 /* Permite que tablas y gráficos se contraigan dentro de las columnas. */
 .result-grid > .panel {
   min-width:0
+}
+
+.technical-note {
+  margin:20px 0 0;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
 }

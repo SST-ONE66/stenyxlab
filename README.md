@@ -1,4 +1,4 @@
-# StenyxLab v0.1
+# StenyxLab v0.2
 
 **Simulador de capacidad y cuellos de botella.** Herramienta web estática para estudiantes, docentes, técnicos y pequeños negocios que necesitan analizar un proceso productivo.
 
@@ -77,6 +77,14 @@ HTML, CSS y JavaScript vanilla, con Chart.js como única librería externa. No s
 
 Publica los cuatro archivos en GitHub Pages, Netlify o Vercel como sitio estático, sin comando de compilación. En GitHub Pages selecciona la rama que contiene los archivos y la carpeta raíz. No se requiere configuración del lado del servidor.
 
+## Mejoras de v0.2
+
+- Propuesta de valor más clara en la presentación inicial.
+- Sección "Cómo interpretar los resultados" con los conceptos principales.
+- Nota técnica sobre el alcance de la estimación.
+- Resaltado visual y etiqueta del cuello de botella, incluidos empates.
+- Diagnóstico automático mejorado con acciones posibles y recomendaciones de monitoreo.
+
 ## Próximas mejoras posibles
 
 - Comparación de escenarios operativos.
@@ -85,4 +93,6 @@ Publica los cuatro archivos en GitHub Pages, Netlify o Vercel como sitio estáti
 
 ## Nota de versión
 
-**v0.1**: primera versión funcional, sin backend, autenticación ni almacenamiento persistente.
+**Versión actual: v0.2.** Mejora la explicación, la interpretación visual y la orientación del diagnóstico, manteniendo las fórmulas de v0.1 y el funcionamiento estático, sin backend, autenticación ni almacenamiento persistente.
+
+**v0.1**: primera versión funcional.

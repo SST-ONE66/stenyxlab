@@ -128,10 +128,19 @@ function readAndValidate() {
 
 function diagnosticText(analysis) {
   const { capacity, demand, difference, bottlenecks } = analysis;
-  const names = bottlenecks.map(stage => stage.name).join(', ');
-  const limitingText = bottlenecks.length === 1 ? `La etapa limitante es ${names}` : `Las etapas limitantes son ${names}`;
-  if (difference >= 0) return `El proceso puede cumplir la demanda objetivo. La capacidad máxima del sistema es de ${format(capacity)} unidades/día, lo que representa un excedente de ${format(difference)} unidades/día. ${limitingText}, por lo que debe mantenerse bajo control para evitar restricciones futuras.`;
-  return `El proceso no puede cumplir la demanda objetivo. La capacidad máxima del sistema es de ${format(capacity)} unidades/día, por debajo de la demanda de ${format(demand)} unidades/día. ${limitingText}, con un déficit de ${format(-difference)} unidades/día. Para mejorar el sistema, se recomienda aumentar recursos, reducir el tiempo de ciclo o mejorar la eficiencia en ${bottlenecks.length === 1 ? 'esa etapa' : 'esas etapas'}.`;
+  const multiple = bottlenecks.length > 1;
+  const stageNames = bottlenecks.map(stage => stage.name);
+  const names = multiple ? `${stageNames.slice(0, -1).join(', ')} y ${stageNames.at(-1)}` : stageNames[0];
+  const actions = 'reducir el tiempo de ciclo, aumentar recursos, mejorar la eficiencia o aumentar las horas disponibles';
+  const figures = `La capacidad máxima del sistema es de ${format(capacity)} unidades/día frente a una demanda objetivo de ${format(demand)} unidades/día`;
+
+  if (difference >= 0) {
+    const limitingText = multiple ? `Las etapas con menor capacidad son ${names}` : `La etapa con menor capacidad es ${names}`;
+    return `El proceso puede cumplir la demanda objetivo. ${figures}, con un excedente de ${format(difference)} unidades/día. ${limitingText}. Se recomienda ${multiple ? 'monitorear estas etapas porque pueden convertirse' : 'monitorear esta etapa porque puede convertirse'} en ${multiple ? 'restricciones futuras' : 'una restricción futura'} si aumenta la demanda o disminuye su capacidad. Si se necesita mayor capacidad, evalúa ${actions} en ${multiple ? 'esas etapas' : 'esa etapa'}.`;
+  }
+
+  const limitingText = multiple ? `Las etapas cuello de botella son ${names}` : `La etapa cuello de botella es ${names}`;
+  return `El proceso no puede cumplir la demanda objetivo. ${figures}, con un déficit de ${format(-difference)} unidades/día. ${limitingText}. Para mejorar la capacidad del sistema, evalúa ${actions} en ${multiple ? 'esas etapas limitantes' : 'esa etapa limitante'}. ${multiple ? 'Mejorar solo una de las etapas empatadas puede dejar a las otras como restricción; evalúa todas y recalcula el proceso.' : 'Después de evaluar una mejora, recalcula el proceso para comprobar si otra etapa se convierte en el cuello de botella.'}`;
 }
 
 function renderResults(analysis) {
@@ -196,7 +205,7 @@ function renderChart(analysis) {
 }
 
 function resultsText(analysis) {
-  return `Análisis de capacidad - StenyxLab v0.1\n\nProceso: ${analysis.process}\nDemanda diaria: ${format(analysis.demand)} unidades/día\nCapacidad del sistema: ${format(analysis.capacity)} unidades/día\nCuello de botella: ${analysis.bottlenecks.map(stage => stage.name).join(', ')}\nResultado: ${analysis.difference >= 0 ? 'El proceso puede cumplir la demanda.' : 'El proceso no alcanza la demanda.'}\n${analysis.difference < 0 ? 'Déficit' : 'Excedente'}: ${format(Math.abs(analysis.difference))} unidades/día\n\nResultados por etapa:\n${analysis.stages.map(stage => `- ${stage.name}: ${format(stage.capacity)} unidades/día, utilización ${format(stage.utilization)}%, estado ${stage.status}`).join('\n')}`;
+  return `Análisis de capacidad - StenyxLab v0.2\n\nProceso: ${analysis.process}\nDemanda diaria: ${format(analysis.demand)} unidades/día\nCapacidad del sistema: ${format(analysis.capacity)} unidades/día\nCuello de botella: ${analysis.bottlenecks.map(stage => stage.name).join(', ')}\nResultado: ${analysis.difference >= 0 ? 'El proceso puede cumplir la demanda.' : 'El proceso no alcanza la demanda.'}\n${analysis.difference < 0 ? 'Déficit' : 'Excedente'}: ${format(Math.abs(analysis.difference))} unidades/día\n\nResultados por etapa:\n${analysis.stages.map(stage => `- ${stage.name}: ${format(stage.capacity)} unidades/día, utilización ${format(stage.utilization)}%, estado ${stage.status}`).join('\n')}`;
 }
 
 async function copyResults() {
